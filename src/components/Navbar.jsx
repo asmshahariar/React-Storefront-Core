@@ -42,7 +42,7 @@ const Navbar = () => {
                   S
                 </div>
                 <span className="text-xl md:text-2xl font-black tracking-tight text-slate-900 group-hover:text-indigo-600 transition-colors hidden sm:block">
-                  Storefront<span className="text-indigo-600">.</span>
+                  React-Store<span className="text-indigo-600">.</span>
                 </span>
               </Link>
             </div>

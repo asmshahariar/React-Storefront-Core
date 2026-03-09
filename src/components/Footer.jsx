@@ -22,7 +22,7 @@ const Footer = () => {
                 S
               </div>
               <span className="text-2xl font-black tracking-tight group-hover:text-indigo-400 transition-colors">
-                Storefront<span className="text-indigo-500">.</span>
+                React-Store<span className="text-indigo-500">.</span>
               </span>
             </Link>
             <p className="text-slate-400 text-sm leading-relaxed mb-8">
@@ -160,7 +160,7 @@ const Footer = () => {
 
         {/* Bottom Strip */}
         <div className="pt-8 border-t border-slate-800 text-sm text-slate-500 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p>© {new Date().getFullYear()} React-Storefront-Core. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} React-Store. All rights reserved.</p>
           <div className="flex flex-wrap justify-center gap-6">
             <Link to="#" className="hover:text-indigo-400 transition-colors">Privacy Policy</Link>
             <Link to="#" className="hover:text-indigo-400 transition-colors">Terms of Service</Link>
