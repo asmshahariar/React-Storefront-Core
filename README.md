@@ -6,8 +6,8 @@ A modern e-commerce frontend built with React, focusing on clean component archi
 [View Live Site](https://react-storefront-core.vercel.app/)
 
 ## Screenshots
-![Home Page Placeholder](https://via.placeholder.com/800x450?text=Home+Page)
-![Product Grid Placeholder](https://via.placeholder.com/800x450?text=Shop+Page)
+![Home Page](https://i.ibb.co.com/hFZYZxrw/Screenshot-1.png)
+![Product Grid](https://i.ibb.co.com/CKgqJbbb/Screenshot-2.png)
 
 ## Tech Stack
 *   React 18
