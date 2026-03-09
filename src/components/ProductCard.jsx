@@ -1,10 +1,16 @@
 import { Link } from 'react-router-dom';
 import { FiHeart, FiShoppingCart } from 'react-icons/fi';
 import { FaStar, FaStarHalfAlt, FaRegStar } from 'react-icons/fa';
+import { useCart } from '../context/CartContext';
 
 const ProductCard = ({ product }) => {
+  const { addToCart } = useCart();
   // Default mock data if no product prop is passed
-  const data = product || {
+  const data = product ? {
+    ...product,
+    rating: product.rating?.rate || 0,
+    reviews: product.rating?.count || 0
+  } : {
     id: 1,
     title: 'Premium Minimalist Headphones',
     price: 249.99,
@@ -69,7 +75,13 @@ const ProductCard = ({ product }) => {
         
         {/* Quick Add Overlay (Desktop Only) */}
         <div className="absolute inset-x-0 bottom-0 p-4 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300 hidden md:block">
-           <button className="w-full bg-white/95 backdrop-blur-sm text-indigo-600 font-bold py-3 rounded-xl shadow-lg hover:bg-indigo-600 hover:text-white flex items-center justify-center gap-2 transition-colors">
+           <button 
+            onClick={(e) => {
+              e.preventDefault();
+              addToCart(data);
+            }}
+            className="w-full bg-white/95 backdrop-blur-sm text-indigo-600 font-bold py-3 rounded-xl shadow-lg hover:bg-indigo-600 hover:text-white flex items-center justify-center gap-2 transition-colors"
+           >
               <FiShoppingCart className="text-lg" /> Quick Add
            </button>
         </div>
@@ -109,6 +121,10 @@ const ProductCard = ({ product }) => {
 
           {/* Mobile/Tablet Add to Cart Button (Hidden on Desktop because of Quick Add) */}
           <button 
+            onClick={(e) => {
+              e.preventDefault();
+              addToCart(data);
+            }}
             className="md:hidden bg-indigo-600 text-white p-3 rounded-xl shadow-md hover:bg-indigo-700 transition-colors"
             aria-label="Add to cart"
           >

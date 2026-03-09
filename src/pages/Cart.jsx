@@ -1,49 +1,10 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FiTrash2, FiMinus, FiPlus, FiArrowRight, FiShield } from 'react-icons/fi';
+import { useCart } from '../context/CartContext';
 
 const Cart = () => {
-  // Mock initial cart data
-  const initialCart = [
-    {
-      id: 1,
-      title: 'Premium Minimalist Headphones',
-      price: 249.99,
-      image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=300',
-      color: 'Matte Black',
-      quantity: 1,
-    },
-    {
-      id: 3,
-      title: 'Stainless Steel Watch',
-      price: 199.50,
-      image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=300',
-      color: 'Silver',
-      quantity: 2,
-    }
-  ];
-
-  const [cartItems, setCartItems] = useState(initialCart);
-
-  const updateQuantity = (id, change) => {
-    setCartItems(cartItems.map(item => {
-      if (item.id === id) {
-        const newQuantity = item.quantity + change;
-        return { ...item, quantity: newQuantity > 0 ? newQuantity : 1 };
-      }
-      return item;
-    }));
-  };
-
-  const removeItem = (id) => {
-    setCartItems(cartItems.filter(item => item.id !== id));
-  };
-
-  // Calculations
-  const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const shipping = subtotal > 100 ? 0 : 15.00;
-  const tax = subtotal * 0.08; // 8% mock tax
-  const total = subtotal + shipping + tax;
+  const { cartItems, updateQuantity, removeFromCart, cartTotals } = useCart();
+  const { subtotal, shipping, tax, total } = cartTotals;
 
   if (cartItems.length === 0) {
     return (
@@ -97,7 +58,7 @@ const Cart = () => {
                         </Link>
                         <p className="text-slate-500 text-sm mb-2">Color: {item.color}</p>
                         <button 
-                          onClick={() => removeItem(item.id)}
+                          onClick={() => removeFromCart(item.id, item.color)}
                           className="flex items-center gap-1 text-sm font-medium text-rose-500 hover:text-rose-600 transition-colors w-max"
                         >
                           <FiTrash2 /> Remove
@@ -109,11 +70,11 @@ const Cart = () => {
                     <div className="sm:col-span-3 flex justify-between sm:justify-center items-center mt-4 sm:mt-0">
                       <span className="sm:hidden text-slate-500 font-medium text-sm">Quantity:</span>
                       <div className="flex items-center justify-between bg-slate-50 border border-slate-200 rounded-lg px-2 h-10 w-28">
-                        <button onClick={() => updateQuantity(item.id, -1)} className="w-8 h-8 flex items-center justify-center text-slate-500 hover:text-indigo-600 hover:bg-slate-200/50 rounded transition-colors">
+                        <button onClick={() => updateQuantity(item.id, item.color, -1)} className="w-8 h-8 flex items-center justify-center text-slate-500 hover:text-indigo-600 hover:bg-slate-200/50 rounded transition-colors">
                           <FiMinus className="text-sm" />
                         </button>
                         <span className="font-bold text-slate-900 text-sm">{item.quantity}</span>
-                        <button onClick={() => updateQuantity(item.id, 1)} className="w-8 h-8 flex items-center justify-center text-slate-500 hover:text-indigo-600 hover:bg-slate-200/50 rounded transition-colors">
+                        <button onClick={() => updateQuantity(item.id, item.color, 1)} className="w-8 h-8 flex items-center justify-center text-slate-500 hover:text-indigo-600 hover:bg-slate-200/50 rounded transition-colors">
                           <FiPlus className="text-sm" />
                         </button>
                       </div>

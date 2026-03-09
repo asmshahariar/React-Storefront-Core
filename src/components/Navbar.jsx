@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { 
   FiShoppingCart, 
   FiUser, 
@@ -8,10 +8,22 @@ import {
   FiX, 
   FiHeart 
 } from 'react-icons/fi';
+import { useCart } from '../context/CartContext';
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const { itemCount } = useCart();
+  const navigate = useNavigate();
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchTerm.trim()) {
+      navigate(`/shop?search=${encodeURIComponent(searchTerm.trim())}`);
+      setIsSearchOpen(false);
+    }
+  };
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -58,14 +70,19 @@ const Navbar = () => {
             <div className="flex flex-1 lg:flex-none justify-end items-center gap-2 sm:gap-4 md:gap-5 z-10">
               
               {/* Desktop Search Bar */}
-              <div className="hidden xl:flex items-center bg-slate-100 rounded-full px-4 py-2 transition-all duration-300 border border-transparent focus-within:border-indigo-300 focus-within:bg-white focus-within:shadow-sm">
+              <form 
+                onSubmit={handleSearch}
+                className="hidden xl:flex items-center bg-slate-100 rounded-full px-4 py-2 transition-all duration-300 border border-transparent focus-within:border-indigo-300 focus-within:bg-white focus-within:shadow-sm"
+              >
                 <FiSearch className="text-slate-400 text-lg mr-2" />
                 <input 
                   type="text" 
                   placeholder="Search products..." 
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                   className="bg-transparent border-none focus:outline-none text-sm w-48 xl:w-64 text-slate-700 placeholder-slate-400"
                 />
-              </div>
+              </form>
 
               {/* Tablet/Mobile Search Icon */}
               <button 
@@ -82,10 +99,10 @@ const Navbar = () => {
               </Link>
 
               {/* Cart */}
-              <Link to="/cart" className="text-slate-600 hover:text-indigo-600 transition-colors p-2 rounded-full hover:bg-indigo-50 relative">
+              <Link to="/cart" className="text-slate-600 hover:text-indigo-600 transition-colors p-2 rounded-full hover:bg-indigo-50 relative pointer-events-auto">
                 <FiShoppingCart className="text-xl md:text-2xl" />
                 <span className="absolute top-0 right-0 -mt-0.5 -mr-0.5 bg-indigo-600 text-white text-[10px] font-bold w-4 h-4 md:w-5 md:h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm">
-                  0
+                  {itemCount}
                 </span>
               </Link>
 
@@ -105,15 +122,17 @@ const Navbar = () => {
         {/* Mobile/Tablet Search Input Dropdown */}
         <div className={`xl:hidden overflow-hidden transition-all duration-300 ease-in-out ${isSearchOpen ? 'max-h-20 border-t border-slate-100 opacity-100' : 'max-h-0 opacity-0'}`}>
           <div className="p-4 bg-white">
-            <div className="flex items-center bg-slate-100 rounded-lg px-4 py-2 border border-slate-200">
+            <form onSubmit={handleSearch} className="flex items-center bg-slate-100 rounded-lg px-4 py-2 border border-slate-200">
               <FiSearch className="text-slate-400 text-lg mr-3" />
               <input 
                 type="text" 
                 placeholder="Search store..." 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 className="bg-transparent border-none focus:outline-none text-sm w-full text-slate-700"
                 autoFocus={isSearchOpen}
               />
-            </div>
+            </form>
           </div>
         </div>
       </header>
